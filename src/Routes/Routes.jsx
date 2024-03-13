@@ -7,6 +7,8 @@ import Menu from "../Pages/Menu/Menu/Menu";
 import Order from "../Pages/Order/Order/Order";
 import Login from "../Pages/Login/Login";
 import SingUp from "../Pages/SingUp/SingUp";
+import PrivateRoutes from "./PrivateRoutes";
+import Secret from "../Pages/Shared/Secret/Secret";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: '/singup',
         element: <SingUp></SingUp>
+      },
+      {
+        path: '/secret',
+        element: <PrivateRoutes><Secret></Secret></PrivateRoutes>
       }
     ]
   },
