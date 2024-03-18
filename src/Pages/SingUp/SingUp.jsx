@@ -1,15 +1,16 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProviders";
 
 
 const SingUp = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  const { createUser } = useContext(AuthContext)
+  const { createUser, uptadeUserProfile } = useContext(AuthContext)
+  const navigate = useNavigate();
 
   const onSubmit = data => {
     console.log(data)
@@ -17,11 +18,19 @@ const SingUp = () => {
       .then((result) => {
         const loggedUser = result.loggedUser;
         console.log(loggedUser)
+        uptadeUserProfile(data.name, data.photoURL)
+          .then(() => {
+            console.log('user info updated')
+          })
+          .catch((error) => { console.log(error) })
+        reset();
+
       })
       .catch((error) => {
         console.error(error)
         // ..
       });
+    navigate('/')
 
   };
   return (
@@ -41,6 +50,13 @@ const SingUp = () => {
                 </label>
                 <input type="text" {...register("name", { required: true })} placeholder="name" name="name" className="input input-bordered" />
                 {errors.name && <span>email is required</span>}
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">photoURL</span>
+                </label>
+                <input type="text" {...register("photoURL", { required: true })} placeholder="photoURL" className="input input-bordered" />
+                {errors.photoURL && <span>photoURL is required</span>}
               </div>
               <div className="form-control">
                 <label className="label">
