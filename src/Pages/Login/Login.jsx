@@ -4,6 +4,8 @@ import { AuthContext } from '../../Providers/AuthProviders';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Swal from 'sweetalert2';
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
+
 
 const Login = () => {
 
@@ -11,6 +13,7 @@ const Login = () => {
   const { singin } = useContext(AuthContext)
   const navigate = useNavigate();
   const location = useLocation();
+ 
 
   const from = location.state?.from?.pathname || "/";
 
@@ -80,7 +83,9 @@ const Login = () => {
                 <input disabled={false} className="btn btn-primary" type="submit" value="login" />
               </div>
               <p className='text-center'> <small> new to here? <Link to='/singup'> create an account</Link></small></p>
+              <SocialLogin></SocialLogin>
             </form>
+
           </div>
         </div>
       </div>

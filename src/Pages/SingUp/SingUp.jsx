@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProviders";
+import UseAxiosPublic from "../../Hooks/UseAxiosPublic";
 
 
 const SingUp = () => {
@@ -11,6 +12,7 @@ const SingUp = () => {
 
   const { createUser, uptadeUserProfile } = useContext(AuthContext)
   const navigate = useNavigate();
+  const axiosPublic = UseAxiosPublic();
 
   const onSubmit = data => {
     console.log(data)
@@ -20,17 +22,27 @@ const SingUp = () => {
         console.log(loggedUser)
         uptadeUserProfile(data.name, data.photoURL)
           .then(() => {
-            console.log('user info updated')
+            const userInfo = {
+              name: data.name,
+              email: data.email
+            }
+            axiosPublic.post('/users', userInfo)
+              .then(res => {
+                if (res.data.insertedId) {
+                  reset();
+                  navigate('/')
+                }
+              })
           })
           .catch((error) => { console.log(error) })
-        reset();
+
 
       })
       .catch((error) => {
         console.error(error)
         // ..
       });
-    navigate('/')
+
 
   };
   return (
